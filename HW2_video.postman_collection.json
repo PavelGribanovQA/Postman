@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "2030d619-ccc4-4dfb-b6c4-ab7f1e1c75c2",
+		"name": "HW2_video",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23954183"
+	},
+	"item": [
+		{
+			"name": "tests",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let req_f = request.data\r",
+							"let resp_f = pm.response.json()\r",
+							"\r",
+							"let req_age = +req_f.age\r",
+							"let resp_age = +resp_f.age\r",
+							"\r",
+							"let req_salary = +req_f.salary\r",
+							"let resp_salary_1_5_year = resp_f.family.u_salary_1_5_year\r",
+							"\r",
+							"let children_2_name = resp_f.family.children[1][0]\r",
+							"\r",
+							"console.log(children_2_name)\r",
+							"console.log(\"req_age = \" + req_age)\r",
+							"console.log(\"resp_age = \" + resp_age)\r",
+							"console.log(\"resp_age = \" + typeof resp_age)\r",
+							"\r",
+							"pm.test(\"Check_age\", function () {\r",
+							"    pm.expect(req_age).to.eql(resp_age);\r",
+							"});\r",
+							"pm.test(\"Check_salary_1.5_year\", function () {\r",
+							"    pm.expect(req_salary*4).to.eql(resp_salary_1_5_year);\r",
+							"});\r",
+							"pm.test(\"Check_children_2_name\", function () {\r",
+							"    pm.expect(children_2_name).to.eql('Kate');\r",
+							"});\r",
+							"pm.test(\"name_type\", function () {\r",
+							"    pm.expect(resp_f.name).to.be.a('String');\r",
+							"});\r",
+							"pm.test(\"salary_type\", function () {\r",
+							"    pm.expect(resp_f.salary).to.be.a('Number');\r",
+							"});\r",
+							"pm.test(\"Have family property\", function () {\r",
+							"    pm.expect(resp_f).to.have.property('family');\r",
+							"});\r",
+							"pm.test(\"All propertyes\", function () {\r",
+							"    pm.expect(resp_f).to.have.all.keys(\"age\", 'family', \"name\", \"salary\");\r",
+							"});\r",
+							"pm.test(\"Inner propertyes\", function () {\r",
+							"    pm.expect(resp_f.family).to.have.all.keys(\"children\", \"u_salary_1_5_year\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Gribok",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "32",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "1000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip_port}}/user_info_3",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"user_info_3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"\r",
+							"login_token = jsonData.token\r",
+							"\r",
+							"console.log(login_token)\r",
+							"\r",
+							"pm.environment.set(\"token\", login_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login",
+							"value": "Gribok",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Gk1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ip_port}}/login",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
